@@ -2,7 +2,9 @@ package com.excilys.formation.webproject.persistence;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,12 @@ import com.jolbox.bonecp.BoneCPDataSource;
  */		
 
 @Repository
-public class ComputerDAOImpl implements ComputerDAO{
+public class ComputerDAOImplHQL implements ComputerDAO{
 
-	final Logger logger = LoggerFactory.getLogger(ComputerDAOImpl.class);
+	final Logger logger = LoggerFactory.getLogger(ComputerDAOImplHQL.class);
+	
+	@Autowired
+	private SessionFactory sessionF;
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -123,38 +128,40 @@ public class ComputerDAOImpl implements ComputerDAO{
 		}
 		jdbcTemplate.update(sql,obj);
 	}
-	
+	/*
 	@Override
 	public void delete(Long id) {
 		String sql = "DELETE FROM computer WHERE id = ?";
 		Object[] obj = new Object[]{id};
 		jdbcTemplate.update(sql,obj);
-	}
+	}*/
 	
-	/*
 	@Override
 	public void delete(Long id) {
 	//Declaration d'un objet Transaction
+		Session session =null;
 	    Transaction tx=null;
+	    
 	    try{
 	    	//obtention de session hibernate 
-	    	Session session = HibernateSessionManager.currentSession();
- 
+	    	session = sessionF.getCurrentSession();
+	    			
 	    	//debut transaction
-	    	tx=session.beginTransaction();
-	        //persistance de l'objet client
-	        session.save(client);
+	    	tx = session.beginTransaction();	
+	    			
+	    	//update
+	    	session.createQuery("DELETE FROM computer WHERE id = ?").setParameter("id", id).executeUpdate();
  
-        	//validation de la transaction
-	        tx.commit();
- 
+	    	//validation de la transaction
+	    	tx.commit();    
+	    	
 	        //fermeture session
-	        HibernateUtil.closeSession();
+	    	sessionF.close();
 	    }catch(Exception e){
 	        System.out.println("erreur de la transaction"+e.getMessage());
 	        tx.rollback();
 	    }
+	    System.out.println("Im done !!!");
 	 }
-	 */
 	
 }

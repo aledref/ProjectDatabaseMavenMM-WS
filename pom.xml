@@ -51,6 +51,8 @@
 		<jstlVersion>1.2</jstlVersion>
 		<slf4jVersion>1.7.7</slf4jVersion>
 		<springVersion>4.0.5.RELEASE</springVersion>
+		<hbnEJBversion>3.4.0.GA</hbnEJBversion>
+		<hbnToolsversion>3.2.3.GA</hbnToolsversion>	
 	</properties>
 
 
@@ -213,7 +215,19 @@
 				<artifactId>spring-webmvc</artifactId>
 				<version>${springVersion}</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hbnEJBversion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hibernate</groupId>
+				<artifactId>hibernate-tools</artifactId>
+				<version>${hbnToolsversion}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>

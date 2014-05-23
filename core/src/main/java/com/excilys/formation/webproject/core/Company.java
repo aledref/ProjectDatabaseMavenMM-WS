@@ -1,11 +1,14 @@
 package com.excilys.formation.webproject.core;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author excilys
  *
  */
-public class Company{
+@SuppressWarnings("serial")
+public class Company implements Serializable{
 
 	/*****************************Builder*****************************/
 	public static class CpyBuilder {

@@ -1,5 +1,13 @@
 package com.excilys.formation.webproject.core;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.joda.time.DateTime;
 
 /**
@@ -18,7 +26,9 @@ import org.joda.time.DateTime;
  * @author excilys
  *
  */
-public class Computer{
+@SuppressWarnings("serial")
+@Entity(name="computer")
+public class Computer implements Serializable{
 
 	/*****************************Builder*****************************/
 	public static class CpuBuilder {
@@ -112,10 +122,17 @@ public class Computer{
 	}	
 
 	//Attributs
+	@Id
+	@Column(name="id",nullable=false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	@Column(name="name")
 	private String	name;
+	@Column(name="introduced")
 	private DateTime introduced;
+	@Column(name="discontinued")
 	private DateTime discontinued;
+	@Column(name="id")
 	private Company company;
 
 	//Accesseurs
