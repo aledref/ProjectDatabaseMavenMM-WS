@@ -97,6 +97,8 @@ public class Computer{
 	public static CpuBuilder builder() {
 		return new CpuBuilder();
 	}
+	public Computer() {
+	}
 	/**
 	 * 
 	 * @param builder

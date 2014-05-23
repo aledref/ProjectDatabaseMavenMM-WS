@@ -25,11 +25,6 @@ public interface ComputerDAO{
 	public Integer getListSize();	
 	/**
 	 * 
-	 * @return A List<Computer> of Computer in the table computer
-	 */
-	public List<Computer> getList();
-	/**
-	 * 
 	 * @param pagewrapper
 	 * @return
 	 */

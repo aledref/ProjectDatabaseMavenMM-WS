@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.008" errors="0" skipped="0" tests="1" name="com.excilys.formation.webproject.persistence.AppTest">
+<testsuite failures="0" time="0.005" errors="0" skipped="0" tests="1" name="com.excilys.formation.webproject.persistence.AppTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/home/excilys/eclipse/jre/jre/lib/amd64"/>
@@ -24,7 +24,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="classworlds.conf" value="/home/excilys/Exos/src/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf848489823453237548.tmp"/>
+    <property name="classworlds.conf" value="/home/excilys/Exos/src/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf8092668237948101364.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
