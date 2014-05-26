@@ -3,13 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.excilys.formation.webproject.dbproject</groupId>
-	<artifactId>dbproject</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<groupId>com.excilys.formation.webproject</groupId>
+	<artifactId>mmproject</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>dbproject</name>
+	<name>mmproject</name>
 	<url>http://maven.apache.org</url>
+
+	<repositories>
+		<repository>
+			<id>excilys</id>
+			<url>http://repository.excilys.com/content/repositories/thirdparty/</url>
+		</repository>
+	</repositories>
 
 	<build>
 
@@ -19,6 +26,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
 						<source>1.7</source>
+						<packaging>jar</packaging>
 						<target>1.7</target>
 					</configuration>
 				</plugin>
@@ -38,7 +46,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<jUnitVersion>3.8.1</jUnitVersion>
 		<servletVersion>3.0-alpha-1</servletVersion>
 		<taglibversion>1.1.2</taglibversion>
 		<jodaTimeVersion>2.3</jodaTimeVersion>
@@ -52,20 +59,13 @@
 		<slf4jVersion>1.7.7</slf4jVersion>
 		<springVersion>4.0.5.RELEASE</springVersion>
 		<hbnEJBversion>3.4.0.GA</hbnEJBversion>
-		<hbnToolsversion>3.2.3.GA</hbnToolsversion>	
+		<hbnToolsversion>3.2.3.GA</hbnToolsversion>
 	</properties>
 
 
 	<dependencyManagement>
 
 		<dependencies>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<scope>test</scope>
-				<version>${jUnitVersion}</version>
-			</dependency>
 
 			<dependency>
 				<groupId>javax.servlet</groupId>
@@ -217,6 +217,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${springVersion}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hbnEJBversion}</version>
@@ -235,9 +241,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>99.0-does-not-exist</version>
 		</dependency>
 
 		<dependency>

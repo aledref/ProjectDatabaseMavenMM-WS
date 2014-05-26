@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.joda.time.DateTime;
 
@@ -132,7 +135,8 @@ public class Computer implements Serializable{
 	private DateTime introduced;
 	@Column(name="discontinued")
 	private DateTime discontinued;
-	@Column(name="id")
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="company_id")
 	private Company company;
 
 	//Accesseurs

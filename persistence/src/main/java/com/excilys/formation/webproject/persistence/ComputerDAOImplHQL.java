@@ -2,10 +2,11 @@ package com.excilys.formation.webproject.persistence;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class ComputerDAOImplHQL implements ComputerDAO{
 
 	final Logger logger = LoggerFactory.getLogger(ComputerDAOImplHQL.class);
 	
-	@Autowired
-	private SessionFactory sessionF;
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -57,8 +58,7 @@ public class ComputerDAOImplHQL implements ComputerDAO{
 
 		String sql = "SELECT cpu.id,cpu.name,cpu.introduced,cpu.discontinued,cpu.company_id,cpy.name FROM computer AS cpu "
 					+"LEFT OUTER JOIN company AS cpy ON cpu.company_id = cpy.id WHERE cpu.id = ?";
-		
-		Computer computer = jdbcTemplate.queryForObject(sql, new Object[]{String.valueOf(id)},cpuRowMapper);
+		Computer computer = (Computer)em.createQuery(sql).setParameter("id", id).getSingleResult(); 
 	    return computer	;
 	}
 	
@@ -100,68 +100,56 @@ public class ComputerDAOImplHQL implements ComputerDAO{
 	}
 
 	@Override
-	public void create(Computer comp) {	
-		String sql = null;	
-		Object[] obj = null;
-		Long idCompany = comp.getCompany().getId();
-		if (idCompany == null) {
-			sql = new String("INSERT into computer(name,introduced,discontinued) VALUES (?,?,?)");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued()};
-		} else {
-			sql = new String("INSERT into computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued(),idCompany};	
-		}
-		jdbcTemplate.update(sql,obj);
+	public void create(Computer comp) {
+		EntityTransaction tx = em.getTransaction();
+		Query query = null;
+	    tx.begin();
+	    String idCompany = String.valueOf(comp.getCompany().getId());
+	    if (idCompany == null) {
+	    	query = em.createQuery("INSERT into computer(name,introduced,discontinued) VALUES (?,?,?)");
+	    	query.setParameter("name", comp.getName());
+	    	query.setParameter("introduced", comp.getIntroduced());
+	    	query.setParameter("discontinued", comp.getDiscontinued());
+	    } else {
+	    	query = em.createQuery("INSERT into computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)");
+	    	query.setParameter("name", comp.getName());
+	    	query.setParameter("introduced", comp.getIntroduced());
+	    	query.setParameter("discontinued", comp.getDiscontinued());
+	    	query.setParameter("company_id", idCompany);	
+	    }
+	    query.executeUpdate();
+	    tx.commit();
 	}
 	
 	@Override
 	public void save(Computer comp,Long id) {
-		String sql = null;	
-		Object[] obj = null;
-		String idCompany = String.valueOf(comp.getCompany().getId());
-		if (idCompany == null) {
-			sql = new String("UPDATE computer SET name=?, introduced=?, discontinued=? WHERE id = ?");
-			obj = new Object[]{String.valueOf(comp.getName()),String.valueOf(comp.getIntroduced()),String.valueOf(comp.getDiscontinued()),id};
-		} else {
-			sql = new String("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id = ?");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued(),idCompany,id};	
-		}
-		jdbcTemplate.update(sql,obj);
-	}
-	/*
-	@Override
-	public void delete(Long id) {
-		String sql = "DELETE FROM computer WHERE id = ?";
-		Object[] obj = new Object[]{id};
-		jdbcTemplate.update(sql,obj);
-	}*/
-	
-	@Override
-	public void delete(Long id) {
-	//Declaration d'un objet Transaction
-		Session session =null;
-	    Transaction tx=null;
-	    
-	    try{
-	    	//obtention de session hibernate 
-	    	session = sessionF.getCurrentSession();
-	    			
-	    	//debut transaction
-	    	tx = session.beginTransaction();	
-	    			
-	    	//update
-	    	session.createQuery("DELETE FROM computer WHERE id = ?").setParameter("id", id).executeUpdate();
- 
-	    	//validation de la transaction
-	    	tx.commit();    
-	    	
-	        //fermeture session
-	    	sessionF.close();
-	    }catch(Exception e){
-	        System.out.println("erreur de la transaction"+e.getMessage());
-	        tx.rollback();
+		EntityTransaction tx = em.getTransaction();
+		Query query = null;
+	    tx.begin();
+	    String idCompany = String.valueOf(comp.getCompany().getId());
+	    if (idCompany == null) {
+	    	query = em.createQuery("UPDATE computer SET name=?, introduced=?, discontinued=? WHERE id = ?");
+	    	query.setParameter("name", comp.getName());
+	    	query.setParameter("introduced", comp.getIntroduced());
+	    	query.setParameter("discontinued", comp.getDiscontinued());
+	    	query.setParameter("id", id);
+	    } else {
+	    	query = em.createQuery("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id = ?");
+	    	query.setParameter("name", comp.getName());
+	    	query.setParameter("introduced", comp.getIntroduced());
+	    	query.setParameter("discontinued", comp.getDiscontinued());
+	    	query.setParameter("company_id", idCompany);
+	    	query.setParameter("id", id);		
 	    }
-	    System.out.println("Im done !!!");
-	 }
+	    query.executeUpdate();
+	    tx.commit();
+	}
 	
+	@Override
+	public void delete(Long id) {    
+	    EntityTransaction tx = em.getTransaction();
+	    tx.begin();
+	    em.createQuery("DELETE FROM computer WHERE id = ?").setParameter("id", id).executeUpdate();
+	    tx.commit();
+	 }	
 }

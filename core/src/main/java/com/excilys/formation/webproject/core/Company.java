@@ -2,12 +2,19 @@ package com.excilys.formation.webproject.core;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * 
  * @author excilys
  *
  */
 @SuppressWarnings("serial")
+@Entity(name="company")
 public class Company implements Serializable{
 
 	/*****************************Builder*****************************/
@@ -62,7 +69,11 @@ public class Company implements Serializable{
 	}
 
 	//Attributs
+	@Id
+	@Column(name="id",nullable=false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	@Column(name="name")
 	private String	name;
 
 	//Accesseurs
