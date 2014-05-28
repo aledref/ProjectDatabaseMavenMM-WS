@@ -6,20 +6,21 @@
 
 	<parent>
 		<groupId>com.excilys.formation.webproject</groupId>
-		<artifactId>mmproject</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+		<artifactId>CompleteProject</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>binding</artifactId>
 		<name>binding</name>
 		<url>http://maven.apache.org</url>
+	<packaging>jar</packaging>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>com.excilys.formation.webproject</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 

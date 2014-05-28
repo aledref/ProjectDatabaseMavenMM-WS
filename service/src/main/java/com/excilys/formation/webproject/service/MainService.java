@@ -20,7 +20,7 @@ public interface MainService {
 	 * 
 	 * @return the size of the table computer
 	 */
-	public Integer getListComputerSize();
+	public Long getListComputerSize();
 	/**
 	 * 
 	 * @param pagewrapper An object countaining the info for the next query
@@ -31,7 +31,7 @@ public interface MainService {
 	 * @param pageWrapper
 	 * @return the size of the List<Computer> of Computer in the table computer to be displayed
 	 */
-	public Integer getListComputerSizeWithName(PageWrapper pageWrapper);
+	public Long getListComputerSizeWithName(PageWrapper pageWrapper);
 	/**
 	 * 
 	 * @param pageWrapper

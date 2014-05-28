@@ -45,7 +45,7 @@ public class DashboardController {
 			if (nameFilter == null) nameFilter = "";
 
 			//3-computerListSize
-			Integer computerListSize = mainService.getListComputerSize();
+			Long computerListSize = mainService.getListComputerSize();
 
 			//4-pageNumber
 
@@ -69,7 +69,7 @@ public class DashboardController {
 			//Build partial pageWrapper, countains nameFilter
 			pageWrapper = PageWrapper.builder().nameFilter(nameFilter).build();
 			//3-computerListSize
-			Integer computerListSize = mainService.getListComputerSizeWithName(pageWrapper);
+			Long computerListSize = mainService.getListComputerSizeWithName(pageWrapper);
 
 			//4-pageNumber
 			Integer pageNumber = null;

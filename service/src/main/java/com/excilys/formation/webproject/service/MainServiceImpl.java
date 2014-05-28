@@ -22,63 +22,63 @@ import com.excilys.formation.webproject.persistence.ComputerDAO;
  */
 
 @Service
-@Transactional
+@Transactional(readOnly=true)
 public class MainServiceImpl implements MainService{
 
 	@Autowired
-	@Qualifier(value="computerDAOImplHQL")
 	private ComputerDAO cpuDAO;
+	
 	@Autowired
 	private CompanyDAO cpyDAO;
 	
-	@Transactional (readOnly=true)
+	@Transactional 
 	@Override
 	public Computer findComputer(Long id) {
 		return cpuDAO.find(id);
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional
 	@Override
-	public Integer getListComputerSize() {
+	public Long getListComputerSize() {
 		return cpuDAO.getListSize();	
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional
 	@Override
 	public void getListComputer(PageWrapper pageWrapper) {
 		cpuDAO.getList(pageWrapper);	
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional
 	@Override
-	public Integer getListComputerSizeWithName(PageWrapper pageWrapper) {
+	public Long getListComputerSizeWithName(PageWrapper pageWrapper) {
 		return cpuDAO.getListSizeWithName(pageWrapper);
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional
 	@Override
 	public List<Computer> getListComputerWithName(PageWrapper pageWrapper) {
 		return cpuDAO.getListWithName(pageWrapper);
 	}
 	
-	@Transactional
+	@Transactional(readOnly=false)
 	@Override
 	public void createComputer(Computer comp) {
 			cpuDAO.create(comp);
 	}	
 	
-	@Transactional
+	@Transactional(readOnly=false)
 	@Override
 	public void saveComputer(Computer comp, Long id){
 			cpuDAO.save(comp,id);
 	}
-	@Transactional
+	@Transactional(readOnly=false)
 	@Override
 	public void deleteComputer(Long id) {
 			cpuDAO.delete(id);
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional 
 	@Override
 	public Company findCompanyById(String id) {
 		Company comp = new Company();
@@ -87,13 +87,13 @@ public class MainServiceImpl implements MainService{
 		return comp; 
 	}
 	
-	@Transactional (readOnly=true)
+	@Transactional
 	@Override
 	public List<Company> getListCompany() {
 		return (ArrayList<Company>) cpyDAO.getList();
 	}
 	
-	@Transactional
+	@Transactional(readOnly=false)
 	@Override
 	public void createCompany(Company comp) {
 			cpyDAO.create(comp);

@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 /**
@@ -30,7 +32,8 @@ import org.joda.time.DateTime;
  *
  */
 @SuppressWarnings("serial")
-@Entity(name="computer")
+@Entity
+@Table(name="computer")
 public class Computer implements Serializable{
 
 	/*****************************Builder*****************************/
@@ -104,7 +107,7 @@ public class Computer implements Serializable{
 	/*****************************Builder*****************************/	
 
 	/**
-	 * 
+	 * 0000-00-00
 	 * @return
 	 */
 	public static CpuBuilder builder() {
@@ -123,7 +126,7 @@ public class Computer implements Serializable{
 		this.discontinued = builder.discontinued;
 		this.company = builder.company;
 	}	
-
+	
 	//Attributs
 	@Id
 	@Column(name="id",nullable=false)
@@ -131,8 +134,10 @@ public class Computer implements Serializable{
 	private Long id;
 	@Column(name="name")
 	private String	name;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name="introduced")
 	private DateTime introduced;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name="discontinued")
 	private DateTime discontinued;
 	@ManyToOne(fetch=FetchType.EAGER)

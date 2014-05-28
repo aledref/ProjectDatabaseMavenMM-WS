@@ -22,7 +22,7 @@ public interface ComputerDAO{
 	 * 
 	 * @return
 	 */
-	public Integer getListSize();	
+	public Long getListSize();	
 	/**
 	 * 
 	 * @param pagewrapper
@@ -34,7 +34,7 @@ public interface ComputerDAO{
 	 * @param pageWrapper
 	 * @return
 	 */
-	public Integer getListSizeWithName(PageWrapper pageWrapper);
+	public Long getListSizeWithName(PageWrapper pageWrapper);
 	/**
 	 * 
 	 * @param pageWrapper

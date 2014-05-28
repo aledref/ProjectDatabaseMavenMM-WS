@@ -1,13 +1,19 @@
 package com.excilys.formation.webproject.persistence;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.webproject.core.Computer;
@@ -32,11 +38,10 @@ public class ComputerDAOImpl implements ComputerDAO{
 	final Logger logger = LoggerFactory.getLogger(ComputerDAOImpl.class);
 	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
-
-    public void setDataSource(BoneCPDataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("computer");
+	
+	@PersistenceContext(unitName = "computer")
+	private EntityManager em;
 	
 	@Autowired
 	private BoneCPDataSource dataSource;
@@ -44,117 +49,95 @@ public class ComputerDAOImpl implements ComputerDAO{
 	@Autowired
 	private Closer closer;
 	
-	@Autowired
-	private ComputerRowMapper cpuRowMapper;
-	
 	@Override
 	public Computer find(Long id) {
-
-		String sql = "SELECT cpu.id,cpu.name,cpu.introduced,cpu.discontinued,cpu.company_id,cpy.name FROM computer AS cpu "
-					+"LEFT OUTER JOIN company AS cpy ON cpu.company_id = cpy.id WHERE cpu.id = ?";
-		
-		Computer computer = jdbcTemplate.queryForObject(sql, new Object[]{String.valueOf(id)},cpuRowMapper);
+		String sql = "from Computer cpu where cpu.id = :id";
+		Query q = em.createQuery(sql);
+		Computer computer = (Computer)  q.setParameter("id",id).getSingleResult(); 
+		em.close();
 	    return computer	;
 	}
 	
 	@Override
-	public Integer getListSize() {
-		String sql = "SELECT COUNT(*) as computerlistsize FROM computer";
-		return jdbcTemplate.queryForObject(sql,Integer.class);
+	public Long getListSize() {
+		String sql = "select count(cpu) from Computer cpu";
+		return  (Long) em.createQuery(sql).getSingleResult();
 	}
 	
 	@Override
 	public void getList(PageWrapper pageWrapper) {
-		String sql = new StringBuilder("SELECT DISTINCT cpu.id,cpu.name,cpu.introduced,cpu.discontinued,cpu.company_id,cpy.name "
-				+ "FROM computer AS cpu LEFT OUTER JOIN company AS cpy ON cpu.company_id = cpy.id ORDER BY ")
-				.append(pageWrapper.getFieldOrder()).append(" ")
-				.append(pageWrapper.getOrder()).append(", cpu.name ASC LIMIT ?,?").toString();
-		Object[] obj = new Object[]{pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1),pageWrapper.getPerPage()};
-		List<Computer> list = jdbcTemplate.query(sql,obj,cpuRowMapper);
-		pageWrapper.setComputerList(list);
+		String sql = new StringBuilder("from Computer cpu order by ").append(pageWrapper.getFieldOrder()).append(" ")
+				.append(pageWrapper.getOrder()).append(" , cpu.name asc").toString();
+		Query q = em.createQuery(sql);
+		q.setFirstResult(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
+		q.setMaxResults(pageWrapper.getPerPage());
+		List<Object> list = (List<Object>) q.getResultList();
+		List<Computer> listCpu = new ArrayList<Computer>();
+		for (Object i : list) {
+			listCpu.add((Computer) i);
+		}
+		pageWrapper.setComputerList(listCpu);
 	}
 	
 	@Override
-	public Integer getListSizeWithName(PageWrapper pageWrapper) {	
-		String sql = "SELECT COUNT(*) AS computerListSize FROM computer AS cpu LEFT OUTER JOIN company AS cpy "
-				+ "ON cpu.company_id = cpy.id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
-				String namefilter = new StringBuilder("%").append(pageWrapper.getNameFilter()).append("%").toString();
-		return jdbcTemplate.queryForObject(sql,new Object[]{namefilter,namefilter},Integer.class);
-	}
-	
-	
-	@Override
-	public List<Computer> getListWithName(PageWrapper pageWrapper) {	
+	public Long getListSizeWithName(PageWrapper pageWrapper) {	
+		String sql = "select count(cpu) from Computer cpu where cpu.name like :name1 or cpu.company.name like :name2";
+		Query q = em.createQuery(sql);
 		String namefilter = new StringBuilder("%").append(pageWrapper.getNameFilter()).append("%").toString();
-		String sql = new StringBuilder("SELECT cpu.id,cpu.name,cpu.introduced,cpu.discontinued,cpu.company_id,cpy.name FROM computer AS cpu "
-				+ "LEFT OUTER JOIN company AS cpy ON cpu.company_id = cpy.id WHERE cpu.name LIKE ? OR cpy.name LIKE ? ")
+		q.setParameter("name1", namefilter);
+		q.setParameter("name2", namefilter);				
+		return (Long) q.getSingleResult();
+	}
+	
+	
+	@Override
+	public List<Computer> getListWithName(PageWrapper pageWrapper) {
+		String sql = new StringBuilder("from Computer cpu where cpu.name like :name1 or cpu.company.name like :name2 order by ")
 				.append(pageWrapper.getFieldOrder()).append(" ")
-				.append(pageWrapper.getOrder()).append(", cpu.name ASC LIMIT ?,?").toString();
-		Object[] obj = new Object[]{namefilter,namefilter,pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1),pageWrapper.getPerPage()};
-		return jdbcTemplate.query(sql,obj,cpuRowMapper);
+				.append(pageWrapper.getOrder()).toString();
+		Query q = em.createQuery(sql);
+		q.setFirstResult(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
+		q.setMaxResults(pageWrapper.getPerPage());
+		String namefilter = new StringBuilder("%").append(pageWrapper.getNameFilter()).append("%").toString();
+		q.setParameter("name1", namefilter);
+		q.setParameter("name2", namefilter);
+		List<Object> list = (List<Object>) q.getResultList();
+		List<Computer> listCpu = new ArrayList<Computer>();
+		for (Object i : list) {
+			listCpu.add((Computer) i);
+		}
+		return listCpu;
 	}
 
 	@Override
-	public void create(Computer comp) {	
-		String sql = null;	
-		Object[] obj = null;
-		Long idCompany = comp.getCompany().getId();
-		if (idCompany == null) {
-			sql = new String("INSERT into computer(name,introduced,discontinued) VALUES (?,?,?)");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued()};
-		} else {
-			sql = new String("INSERT into computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued(),idCompany};	
-		}
-		jdbcTemplate.update(sql,obj);
+	public void create(Computer comp) {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	    em.persist(comp);
+	    tx.commit();
+	    em.close();
 	}
 	
 	@Override
 	public void save(Computer comp,Long id) {
-		String sql = null;	
-		Object[] obj = null;
-		String idCompany = String.valueOf(comp.getCompany().getId());
-		if (idCompany == null) {
-			sql = new String("UPDATE computer SET name=?, introduced=?, discontinued=? WHERE id = ?");
-			obj = new Object[]{String.valueOf(comp.getName()),String.valueOf(comp.getIntroduced()),String.valueOf(comp.getDiscontinued()),id};
-		} else {
-			sql = new String("UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id = ?");
-			obj = new Object[]{comp.getName(),comp.getIntroduced(),comp.getDiscontinued(),idCompany,id};	
-		}
-		jdbcTemplate.update(sql,obj);
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		Query query = null;
+	    tx.begin();
+	    em.merge(comp);
+	    tx.commit();
+	    em.close();
 	}
 	
 	@Override
-	public void delete(Long id) {
-		String sql = "DELETE FROM computer WHERE id = ?";
-		Object[] obj = new Object[]{id};
-		jdbcTemplate.update(sql,obj);
-	}
-	
-	/*
-	@Override
-	public void delete(Long id) {
-	//Declaration d'un objet Transaction
-	    Transaction tx=null;
-	    try{
-	    	//obtention de session hibernate 
-	    	Session session = HibernateSessionManager.currentSession();
- 
-	    	//debut transaction
-	    	tx=session.beginTransaction();
-	        //persistance de l'objet client
-	        session.save(client);
- 
-        	//validation de la transaction
-	        tx.commit();
- 
-	        //fermeture session
-	        HibernateUtil.closeSession();
-	    }catch(Exception e){
-	        System.out.println("erreur de la transaction"+e.getMessage());
-	        tx.rollback();
-	    }
-	 }
-	 */
-	
+	public void delete(Long id){   
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	    Computer comp = find(id);
+	    em.remove(em.contains(comp) ? comp : em.merge(comp));
+	    tx.commit();
+	    em.close();
+	 }	
 }

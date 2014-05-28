@@ -21,7 +21,7 @@ public class PageWrapper{
 		private String	fieldOrder;
 		private String order;
 		private List<Computer> computerList;
-		private Integer computerListSize;
+		private Long computerListSize;
 
 		/**
 		 * 
@@ -73,7 +73,7 @@ public class PageWrapper{
 		 * @param computerlistsize
 		 * @return
 		 */
-		public PwBuilder computerListSize(Integer computerListSize) {
+		public PwBuilder computerListSize(Long computerListSize) {
 			this.computerListSize = computerListSize;
 			return this;
 		}
@@ -113,7 +113,7 @@ public class PageWrapper{
 	private String	fieldOrder;
 	private String order;
 	private List<Computer> computerList;
-	private Integer computerListSize;
+	private Long computerListSize;
 	private final static int PAGE_INCREMENT[]={-10,-5,-4,-3,-2,-1,0,1,2,3,4,5,10};
 	private final static int PER_PAGE = 25;
 
@@ -154,10 +154,10 @@ public class PageWrapper{
 	public void setComputerList(List<Computer> computerList){
 		this.computerList = computerList;
 	}
-	public Integer getComputerListSize() {
+	public Long getComputerListSize() {
 		return computerListSize;
 	}
-	public void setComputerListSize(Integer computerListSize) {
+	public void setComputerListSize(Long computerListSize) {
 		this.computerListSize = computerListSize;
 	}
 	@Override
