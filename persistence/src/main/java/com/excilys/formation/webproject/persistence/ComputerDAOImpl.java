@@ -9,6 +9,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,10 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.webproject.core.Computer;
 import com.excilys.formation.webproject.core.PageWrapper;
+import com.excilys.formation.webproject.core.QComputer;
 import com.jolbox.bonecp.BoneCPDataSource;
+import com.mysema.query.Tuple;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * attributenumber : associates an Integer to any field of Computer
@@ -34,7 +40,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 @Repository
 public class ComputerDAOImpl implements ComputerDAO{
 
-	final Logger logger = LoggerFactory.getLogger(ComputerDAOImpl.class);
+	final Logger logger = LoggerFactory.getLogger(ComputerDAOImpl.class);	
 	
 	@Autowired
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("computer");
@@ -45,47 +51,65 @@ public class ComputerDAOImpl implements ComputerDAO{
 	@Autowired
 	private BoneCPDataSource dataSource;
 	
-	@Autowired
-	private Closer closer;
-	
 	@Override
 	public Computer find(Long id) {
-		String sql = "from Computer cpu where cpu.id = :id";
-		Query q = em.createQuery(sql);
-		Computer computer = (Computer)  q.setParameter("id",id).getSingleResult(); 
-		em.close();
-	    return computer	;
+		JPAQuery query = new JPAQuery(em); 
+		QComputer qcpu = QComputer.computer;
+		Computer cpu = query.from(qcpu)
+				  .where(qcpu.id.eq(id))
+				  .uniqueResult(qcpu);
+		return cpu;
 	}
 	
 	@Override
 	public Long getListSize() {
-		String sql = "select count(cpu) from Computer cpu";
-		return  (Long) em.createQuery(sql).getSingleResult();
+		JPAQuery query = new JPAQuery(em); 
+		QComputer qcpu = QComputer.computer;
+		query.from(qcpu);
+		return query.count();
 	}
 	
 	@Override
 	public void getList(PageWrapper pageWrapper) {
-		String sql = new StringBuilder("from Computer cpu order by ").append(pageWrapper.getFieldOrder()).append(" ")
-				.append(pageWrapper.getOrder()).append(" , cpu.name asc").toString();
-		Query q = em.createQuery(sql);
-		q.setFirstResult(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
-		q.setMaxResults(pageWrapper.getPerPage());
-		List<Object> list = (List<Object>) q.getResultList();
-		List<Computer> listCpu = new ArrayList<Computer>();
-		for (Object i : list) {
-			listCpu.add((Computer) i);
-		}
-		pageWrapper.setComputerList(listCpu);
+		JPAQuery query = new JPAQuery(em); 
+		QComputer qcpu = QComputer.computer;
+		query.from(qcpu).orderBy(qcpu.name.asc(), qcpu.id.asc());
+		query.offset(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
+		query.limit(pageWrapper.getPerPage());
+		List<Computer> list = query.list(qcpu);
+		pageWrapper.setComputerList(list);
 	}
 	
 	@Override
 	public Long getListSizeWithName(PageWrapper pageWrapper) {	
-		String sql = "select count(cpu) from Computer cpu where cpu.name like :name1 or cpu.company.name like :name2";
-		Query q = em.createQuery(sql);
+		JPAQuery query = new JPAQuery(em); 
+		QComputer qcpu = QComputer.computer;
+		query.from(qcpu);
+		
+		switch(pageWrapper.get)
+		
+		
+		query.orderBy( qcpu.id.asc(), qcpu.id.asc());
+		
+		
+		
+		
+		
+		
+		
+		query.offset(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
+		query.limit(pageWrapper.getPerPage());
+		List<Computer> list = query.list(qcpu);
+		pageWrapper.setComputerList(list);
+		
 		String namefilter = new StringBuilder("%").append(pageWrapper.getNameFilter()).append("%").toString();
-		q.setParameter("name1", namefilter);
-		q.setParameter("name2", namefilter);				
-		return (Long) q.getSingleResult();
+		CriteriaBuilder builder = emf.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery( Long.class );
+		Root<Computer> root = criteria.from( Computer.class );
+		//criteria.where(builder.like(Computer_.name,namefilter));
+		//criteria.where(builder.like(root.<Company>get("company").<String>get("name"),namefilter));
+		criteria.select(builder.count(criteria.from(Computer.class)));
+		return em.createQuery(criteria).getSingleResult();
 	}
 	
 	

@@ -12,7 +12,6 @@
 	<url>http://maven.apache.org</url>
 
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -20,11 +19,67 @@
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
+						<processors>
+							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+						</processors>
+						<options>
+							<persistenceXml>com/excilys/formation/webproject/webapp/src/main/resources/META-INF/persistence.xml</persistenceXml>
+						</options>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>apt-maven-plugin</artifactId>
+					<version>1.0.9</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/generated-sources/java</outputDirectory>
+								<processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<processors>
+						<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+					</processors>
+					<options>
+						<persistenceXml>com/excilys/formation/webproject/webapp/src/main/resources/META-INF/persistence.xml</persistenceXml>
+					</options>
+				</configuration>
+				</plugin>
+				
+			<plugin>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>apt-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/generated-sources/java</outputDirectory>
+								<processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+		</plugins>
+
 	</build>
+
 
 	<modules>
 		<module>core</module>
@@ -39,9 +94,21 @@
 			<id>excilys</id>
 			<url>http://repository.excilys.com/content/repositories/thirdparty/</url>
 		</repository>
+		<repository>
+			<id>msource</id>
+			<url>http://source.mysema.com/maven2/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<properties>
+
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<servletVersion>3.0-alpha-1</servletVersion>
@@ -59,6 +126,7 @@
 		<hbnVersion>4.3.5.Final</hbnVersion>
 		<hbnEJBVersion>3.4.0.GA</hbnEJBVersion>
 		<commonsLoggingVersion>99.0-does-not-exist</commonsLoggingVersion>
+		<queryDSLVersion>3.3.4</queryDSLVersion>
 	</properties>
 
 
@@ -156,21 +224,17 @@
 				<version>${springVersion}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${springVersion}</version>
+			</dependency>
+
 			<!-- JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, 
 				spring-tx) Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*) -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>${springVersion}</version>
-			</dependency>
-
-			<!-- Web application development utilities applicable to both Servlet 
-				and Portlet Environments (depends on spring-core, spring-beans, spring-context) 
-				Define this if you use Spring MVC, or wish to use Struts, JSF, or another 
-				web framework with Spring (org.springframework.web.*) -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
 				<version>${springVersion}</version>
 			</dependency>
 
@@ -195,6 +259,19 @@
 				<version>${hbnVersion}</version>
 			</dependency>
 
+			<!-- QueryDSL -->
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${queryDSLVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${queryDSLVersion}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>
@@ -207,6 +284,23 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<!-- QueryDSL -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>4.3.5.Final</version>
 		</dependency>
 
 	</dependencies>
