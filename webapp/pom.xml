@@ -62,16 +62,6 @@
 			<artifactId>jstl</artifactId>
 		</dependency>
 
-
-		<!-- Web application development utilities applicable to both Servlet and 
-			Portlet Environments (depends on spring-core, spring-beans, spring-context) 
-			Define this if you use Spring MVC, or wish to use Struts, JSF, or another 
-			web framework with Spring (org.springframework.web.*) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-
 		<!-- Spring MVC for Servlet Environments (depends on spring-core, spring-beans, 
 			spring-context, spring-web) Define this if you use Spring MVC with a Servlet 
 			Container such as Apache Tomcat (org.springframework.web.servlet.*) -->

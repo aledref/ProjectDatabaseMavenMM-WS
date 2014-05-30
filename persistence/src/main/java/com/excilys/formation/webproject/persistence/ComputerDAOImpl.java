@@ -1,6 +1,5 @@
 package com.excilys.formation.webproject.persistence;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +122,6 @@ public class ComputerDAOImpl implements ComputerDAO{
 	public void save(Computer comp,Long id) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Query query = null;
 		comp.setId(id);
 	    tx.begin();
 	    em.merge(comp);
