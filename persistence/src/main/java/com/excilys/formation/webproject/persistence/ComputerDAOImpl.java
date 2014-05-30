@@ -124,6 +124,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Query query = null;
+		comp.setId(id);
 	    tx.begin();
 	    em.merge(comp);
 	    tx.commit();

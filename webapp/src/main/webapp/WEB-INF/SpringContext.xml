@@ -19,7 +19,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl"
-			value="jdbc:mysql://localhost:3306/computer-database-db?ZeroDateTimeBehavior=convertToNull" />
+			value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 		<property name="idleConnectionTestPeriodInMinutes" value="60" />
