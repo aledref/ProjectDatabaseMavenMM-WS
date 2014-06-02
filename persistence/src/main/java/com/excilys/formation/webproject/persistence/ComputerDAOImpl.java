@@ -9,9 +9,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +18,9 @@ import org.springframework.stereotype.Repository;
 import com.excilys.formation.webproject.core.Computer;
 import com.excilys.formation.webproject.core.PageWrapper;
 import com.excilys.formation.webproject.core.QComputer;
-import com.jolbox.bonecp.BoneCPDataSource;
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
- * attributenumber : associates an Integer to any field of Computer
- *  	-Long id : 0;
- *  	-String	name : 1;
- *  	-Timestamp introduced : 2;
- *  	-Timestamp discontinued : 3;
- *  	-Company company : 4;
  * 
  * @author excilys
  *
@@ -47,9 +36,6 @@ public class ComputerDAOImpl implements ComputerDAO{
 	
 	@PersistenceContext(unitName = "computer")
 	private EntityManager em;
-	
-	@Autowired
-	private BoneCPDataSource dataSource;
 	
 	@Override
 	public Computer find(Long id) {

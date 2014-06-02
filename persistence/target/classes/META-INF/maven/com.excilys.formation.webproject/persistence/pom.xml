@@ -17,7 +17,7 @@
 
 	<dependencies>
 
-
+		<!-- Module dep -->
 		<dependency>
 			<groupId>com.excilys.formation.webproject</groupId>
 			<artifactId>core</artifactId>
@@ -76,7 +76,6 @@
 			<artifactId>querydsl-apt</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
