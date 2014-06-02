@@ -85,31 +85,38 @@ public class ComputerDAOImpl implements ComputerDAO{
 		JPAQuery query = new JPAQuery(em); 
 		QComputer qcpu = QComputer.computer;
 		query.from(qcpu);
-		
-		switch(pageWrapper.get)
-		
-		
-		query.orderBy( qcpu.id.asc(), qcpu.id.asc());
-		
-		
-		
-		
-		
-		
-		
+		switch(pageWrapper.getFieldOrder()+pageWrapper.getOrder()) {
+		case "cpu.idASC" :	
+			query.orderBy( qcpu.id.asc(), qcpu.id.asc());
+			break;
+		case "cpu.idDESC" :
+			query.orderBy( qcpu.id.desc(), qcpu.id.asc());
+			break;
+		case "cpu.introducedASC" :
+			query.orderBy( qcpu.introduced.asc(), qcpu.id.asc());
+			break;
+		case "cpu.introducedDESC" :
+			query.orderBy( qcpu.introduced.desc(), qcpu.id.asc());
+			break;
+		case "cpu.discontinuedASC" :
+			query.orderBy( qcpu.discontinued.asc(), qcpu.id.asc());
+			break;
+		case "cpu.discontinuedDESC" :
+			query.orderBy( qcpu.discontinued.desc(), qcpu.id.asc());
+			break;
+		case "cpu.company_idDESC" :
+			query.orderBy( qcpu.company.id.asc(), qcpu.id.asc());
+			break;
+		case "cpu.company_idASC" :
+			query.orderBy( qcpu.company.id.desc(), qcpu.id.asc());
+			break;	
+		default :
+			query.orderBy( qcpu.id.asc());
+			break;
+		}
 		query.offset(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
 		query.limit(pageWrapper.getPerPage());
-		List<Computer> list = query.list(qcpu);
-		pageWrapper.setComputerList(list);
-		
-		String namefilter = new StringBuilder("%").append(pageWrapper.getNameFilter()).append("%").toString();
-		CriteriaBuilder builder = emf.getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery( Long.class );
-		Root<Computer> root = criteria.from( Computer.class );
-		//criteria.where(builder.like(Computer_.name,namefilter));
-		//criteria.where(builder.like(root.<Company>get("company").<String>get("name"),namefilter));
-		criteria.select(builder.count(criteria.from(Computer.class)));
-		return em.createQuery(criteria).getSingleResult();
+		return query.from(qcpu).count();
 	}
 	
 	
