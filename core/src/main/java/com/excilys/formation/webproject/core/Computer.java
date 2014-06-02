@@ -16,18 +16,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 /**
- * 	id - The Long id of the computer in the database
- *  name - The String name of the computer
- *  introduced - The Timestamp introduced corresponding to the moment the computer entry has been put on the market
- *  discontinued - The Timestamp discontinued corresponding to the moment the computer has been removed from the market
- *  company - The Company manufacturing the computer
- *  
- *  attributenumber : associates an Integer to any field of Computer
- *  	-Long id : 0;
- *  	-String	name : 1;
- *  	-Timestamp introduced : 2;
- *  	-Timestamp discontinued : 3;
- *  	-Company company : 4;
+ * 
  * @author excilys
  *
  */
@@ -107,7 +96,7 @@ public class Computer implements Serializable{
 	/*****************************Builder*****************************/	
 
 	/**
-	 * 0000-00-00
+	 * 
 	 * @return
 	 */
 	public static CpuBuilder builder() {

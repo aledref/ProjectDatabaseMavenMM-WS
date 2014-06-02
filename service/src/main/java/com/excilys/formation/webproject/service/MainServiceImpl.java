@@ -82,7 +82,7 @@ public class MainServiceImpl implements MainService{
 	public Company findCompanyById(String id) {
 		Company comp = new Company();
 		Long idL = Long.decode(id);
-		if (idL > 0) comp = cpyDAO.findById(idL);
+		comp = cpyDAO.findById(idL);
 		return comp; 
 	}
 	

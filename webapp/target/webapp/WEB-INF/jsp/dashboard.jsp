@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <jsp:include page="../../include/header.jsp" />
 
+<br><br>
 <section id="main">
 	<h1 id="homeTitle">${pageWrapper.computerListSize}
 		<spring:message code="dashboard.listResult" />

@@ -7,83 +7,56 @@
 <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.validate.js"></script>
 
+<br>
+<br>
 <!--               JQuery               -->
-<script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-
-						jQuery.validator
-								.addMethod(
-										"dateValid",
-										function(value, element) {
-											var valid = true;
-											if ((/^((19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01]).*/i
-													.test(value))) {
-												var date = value.split('-');
-												var year = parseInt(date[0]);
-												var month = parseInt(date[1]);
-												var day = parseInt(date[2]);
-												if (day > 31) {
-													valid = false;
-												} else if ((day == 31)
-														&& ((month == 2)
-																|| (month == 4)
-																|| (month == 6)
-																|| (month == 9) || (month == 11))) {
-													valid = false;
-												} else if ((month == 2)
-														&& (day > 29)) {
-													valid = false;
-												} else if ((month == 2)
-														&& (day == 29)
-														&& ((year % 4) != 0)) {
-													valid = false;
-												}
-											} else {
-												valid = false;
-											}
-											return (this.optional(element) || valid);
-										}, "Date Invalide");
-
-						jQuery.validator
-								.addMethod(
-										"dateComparison",
-										function(value, element) {
-											if (($.trim(value).length > 0)
-													&& ($.trim($('#introduced')
-															.val()).length > 0)) {
-												return Date.parse($(
-														'#introduced').val()) <= Date
-														.parse(value);
-											} else {
-												return true;
-											}
-										}, "Dates Impossibles");
-
-						// Initialisation du plugin
-						$("#form").validate({
-							rules : {
-								"name" : {
-									required : true,
-									maxlength : 255
-								},
-								"introduced" : {
-									maxlength : 255,
-									dateValid : true
-								},
-								"discontinued" : {
-									maxlength : 255,
-									dateValid : true,
-									dateComparison : true
-								},
-								"company" : {
-									maxlength : 255
-								}
-							}
-						});
-					});
-</script>
+$(document).ready(function(){
+	 
+			jQuery.validator.addMethod("dateValid", function (value,element) { 
+				var valid = true;  
+				if ( (/^((19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01]).*/i.test(value)) ) {
+					var date = value.split('-');
+					var year = parseInt(date[0]);
+					var month = parseInt(date[1]);
+					var day = parseInt(date[2]);
+					if (day > 31 ) {valid = false;} 
+					else if ( (day == 31) && ( (month == 2) || (month == 4) || (month == 6) || (month == 9) || (month == 11) ) ) {valid = false;} 
+					else if ( ( month == 2 ) && (day > 29) ) {valid = false;} 
+					else if ( ( month == 2 ) && (day == 29) && ( (year % 4) != 0) ) {valid = false;} 
+				} else {valid = false;}			
+				return ( this.optional(element) || valid);
+				},"Date Invalide"	        
+			);								
+			
+			jQuery.validator.addMethod("dateComparison", function (value,element) {
+				if ( ($.trim(value).length > 0) && ($.trim($('#introduced').val()).length > 0) ) { return Date.parse($('#introduced').val()) < Date.parse(value); }
+				else {return true;}
+				},"Dates Impossibles"
+			);
+			
+     // Initialisation du plugin
+	    $("#form").validate({
+	    	rules : {
+	        "name":{
+	            required: true,
+	            maxlength: 255
+	        },
+	    	"introduced":{
+	    		maxlength: 255,
+	    		dateValid: true
+        	},
+	    	"discontinued":{
+	    		maxlength: 255,
+	    		dateValid: true,
+	    		dateComparison: true
+        	},
+	    	"company":{
+	    		required: true,
+	    		maxlength: 255
+        	}
+        	}
+	    });
+ });
 <!--              /JQuery               -->
 
 <section id="main">

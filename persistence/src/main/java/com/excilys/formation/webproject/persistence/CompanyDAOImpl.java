@@ -29,6 +29,7 @@ public class CompanyDAOImpl implements CompanyDAO{
 	
 	@Override
 	public Company findById(Long id) {
+		if (id ==0) return null;
 		String sql = "from Company cpy where cpy.id = :id";
 		Query q = em.createQuery(sql);
 		Company company = (Company)  q.setParameter("id",id).getSingleResult(); 

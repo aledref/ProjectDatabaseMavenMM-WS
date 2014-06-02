@@ -15,34 +15,34 @@
 			<!-- Variable declarations for passing labels as parameters -->
 			<!-- Table header for Computer Name -->
 			<th><spring:message code="name" /> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.name"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=0"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-up"></span></a> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.name&order=DESC"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=1"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-down"></span></a></th>
 			<!-- Table header for Introduced Date -->
 			<th><spring:message code="introduced" /> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.introduced"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=2"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-up"></span></a> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.introduced&order=DESC"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=3"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-down"></span></a></th>
 			<!-- Table header for Discontinued Date -->
 			<th><spring:message code="discontinued" /> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.discontinued"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=4"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-up"></span></a> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpu.discontinued&order=DESC"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=5"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-down"></span></a></th>
 			<!-- Table header for Company Name-->
 			<th><spring:message code="company" /> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpy.name"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=6"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-up"></span></a> <a
-				href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=cpy.name&order=DESC"
+				href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=7"
 				class="btn btn-default btn-xs"><span
 					class="glyphicon glyphicon-arrow-down"></span></a></th>
 			<!-- Table header for Edit buttons-->
@@ -74,15 +74,15 @@
 				<td>
 					<form action="removeComputer" method="GET">
 						<input type="submit" class="btn btn-danger" name="rbutton"
-							value="<spring:message code="pagination.deleteComp"/>">
-						<input type="hidden" name="rid" value="${cpu.id}">
+							value="<spring:message code="pagination.deleteComp"/>"> <input
+							type="hidden" name="rid" value="${cpu.id}">
 					</form>
 				</td>
 			</tr>
 		</c:forEach>
 
 		<a class="btn btn-default"
-			href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}"><span
+			href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}"><span
 			class="glyphicon glyphicon-fast-backward"></span></a>
 
 		<c:forEach items="${pageWrapper.pageIncrement}" var="INC">
@@ -92,11 +92,11 @@
 				<c:choose>
 					<c:when test="${INC == 0}">
 						<a class="btn btn-success"
-							href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=${pageWrapper.pageNumber}">${pageWrapper.pageNumber}</a>
+							href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=${pageWrapper.pageNumber}">${pageWrapper.pageNumber}</a>
 					</c:when>
 					<c:otherwise>
 						<a class="btn btn-default"
-							href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=${pageWrapper.pageNumber + INC}">${pageWrapper.pageNumber + INC}</a>
+							href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=${pageWrapper.pageNumber + INC}">${pageWrapper.pageNumber + INC}</a>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
@@ -104,7 +104,7 @@
 		</c:forEach>
 
 		<a class="btn btn-default"
-			href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=last"><span
+			href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=last"><span
 			class="glyphicon glyphicon-fast-forward"></span></a>
 
 	</tbody>
@@ -112,7 +112,7 @@
 </table>
 
 <a class="btn btn-default"
-	href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}"><span
+	href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}"><span
 	class="glyphicon glyphicon-fast-backward"></span></a>
 
 <c:forEach items="${pageWrapper.pageIncrement}" var="INC">
@@ -122,11 +122,11 @@
 		<c:choose>
 			<c:when test="${INC == 0}">
 				<a class="btn btn-success"
-					href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=${pageWrapper.pageNumber}">${pageWrapper.pageNumber}</a>
+					href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=${pageWrapper.pageNumber}">${pageWrapper.pageNumber}</a>
 			</c:when>
 			<c:otherwise>
 				<a class="btn btn-default"
-					href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=${pageWrapper.pageNumber + INC}">${pageWrapper.pageNumber + INC}</a>
+					href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=${pageWrapper.pageNumber + INC}">${pageWrapper.pageNumber + INC}</a>
 			</c:otherwise>
 		</c:choose>
 	</c:if>
@@ -134,5 +134,5 @@
 </c:forEach>
 
 <a class="btn btn-default"
-	href="dashboard?nameFilter=${pageWrapper.nameFilter}&fieldOrder=${pageWrapper.fieldOrder}&order=${pageWrapper.order}&pageNumber=last"><span
+	href="dashboard?nameFilter=${pageWrapper.nameFilter}&orderNumber=${pageWrapper.orderNumber}&pageNumber=last"><span
 	class="glyphicon glyphicon-fast-forward"></span></a>

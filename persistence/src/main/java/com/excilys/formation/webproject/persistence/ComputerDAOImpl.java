@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 	@Autowired
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("computer");
 	
-	@PersistenceContext(unitName = "computer")
+	@PersistenceContext(unitName = "computer",type = PersistenceContextType.TRANSACTION)
 	private EntityManager em;
 	
 	@Override
@@ -59,7 +60,36 @@ public class ComputerDAOImpl implements ComputerDAO{
 	public void getList(PageWrapper pageWrapper) {
 		JPAQuery query = new JPAQuery(em); 
 		QComputer qcpu = QComputer.computer;
-		query.from(qcpu).orderBy(qcpu.name.asc(), qcpu.id.asc());
+		query.from(qcpu);
+		switch(pageWrapper.getOrderNumber()) {
+		case "0" :	
+			query.orderBy( qcpu.id.asc(), qcpu.id.asc());
+			break;
+		case "1" :
+			query.orderBy( qcpu.id.desc(), qcpu.id.asc());
+			break;
+		case "2" :
+			query.orderBy( qcpu.introduced.asc(), qcpu.id.asc());
+			break;
+		case "3" :
+			query.orderBy( qcpu.introduced.desc(), qcpu.id.asc());
+			break;
+		case "4" :
+			query.orderBy( qcpu.discontinued.asc(), qcpu.id.asc());
+			break;
+		case "5" :
+			query.orderBy( qcpu.discontinued.desc(), qcpu.id.asc());
+			break;
+		case "6" :
+			query.orderBy( qcpu.company.name.asc(), qcpu.id.asc());
+			break;
+		case "7" :
+			query.orderBy( qcpu.company.name.desc(), qcpu.id.asc());
+			break;	
+		default :
+			query.orderBy( qcpu.id.asc());
+			break;
+		}
 		query.offset(pageWrapper.getPerPage()*(pageWrapper.getPageNumber()-1));
 		query.limit(pageWrapper.getPerPage());
 		List<Computer> list = query.list(qcpu);
@@ -71,30 +101,30 @@ public class ComputerDAOImpl implements ComputerDAO{
 		JPAQuery query = new JPAQuery(em); 
 		QComputer qcpu = QComputer.computer;
 		query.from(qcpu);
-		switch(pageWrapper.getFieldOrder()+pageWrapper.getOrder()) {
-		case "cpu.idASC" :	
+		switch(pageWrapper.getOrderNumber()) {
+		case "0" :	
 			query.orderBy( qcpu.id.asc(), qcpu.id.asc());
 			break;
-		case "cpu.idDESC" :
+		case "1" :
 			query.orderBy( qcpu.id.desc(), qcpu.id.asc());
 			break;
-		case "cpu.introducedASC" :
+		case "2" :
 			query.orderBy( qcpu.introduced.asc(), qcpu.id.asc());
 			break;
-		case "cpu.introducedDESC" :
+		case "3" :
 			query.orderBy( qcpu.introduced.desc(), qcpu.id.asc());
 			break;
-		case "cpu.discontinuedASC" :
+		case "4" :
 			query.orderBy( qcpu.discontinued.asc(), qcpu.id.asc());
 			break;
-		case "cpu.discontinuedDESC" :
+		case "5" :
 			query.orderBy( qcpu.discontinued.desc(), qcpu.id.asc());
 			break;
-		case "cpu.company_idDESC" :
-			query.orderBy( qcpu.company.id.asc(), qcpu.id.asc());
+		case "6" :
+			query.orderBy( qcpu.company.name.asc(), qcpu.id.asc());
 			break;
-		case "cpu.company_idASC" :
-			query.orderBy( qcpu.company.id.desc(), qcpu.id.asc());
+		case "7" :
+			query.orderBy( qcpu.company.name.desc(), qcpu.id.asc());
 			break;	
 		default :
 			query.orderBy( qcpu.id.asc());

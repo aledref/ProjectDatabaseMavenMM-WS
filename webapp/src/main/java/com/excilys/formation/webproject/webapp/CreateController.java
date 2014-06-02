@@ -59,10 +59,12 @@ public class CreateController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String postAdd(@ModelAttribute @Valid ComputerDTO computerDTO,BindingResult result,
 			Model model) {		
-
+		
 		Company company = mainService.findCompanyById(computerDTO.getCompany());
 		Computer computer = mapper.fromDTO(computerDTO, company);
-		List<String> errorlist = Validator.check(computerDTO,computer.getCompany().getName());
+		List<String> errorlist = null; 
+		if (company == null) errorlist = Validator.check(computerDTO,"");
+		else errorlist = Validator.check(computerDTO,computer.getCompany().getName());
 		List<Company> companylist = (ArrayList<Company>)mainService.getListCompany();
 		model.addAttribute("companylist", companylist);
 		model.addAttribute("companylistsize", companylist.size());

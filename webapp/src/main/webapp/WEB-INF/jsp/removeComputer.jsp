@@ -2,6 +2,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 <jsp:include page="../../include/header.jsp" />
+
+<br><br>
 <section id="main">
 
 	<h1>

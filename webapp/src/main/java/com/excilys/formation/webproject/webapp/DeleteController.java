@@ -35,7 +35,7 @@ public class DeleteController {
 
 			model.addAttribute("rcomputer", mainService.findComputer(removedid));
 
-			return "removeComputer";
+			return "/removeComputer";
 		}	
 	}
 	/**

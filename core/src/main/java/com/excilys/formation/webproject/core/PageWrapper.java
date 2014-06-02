@@ -10,16 +10,12 @@ import java.util.List;
 public class PageWrapper{
 
 	/*****************************Builder*****************************/
-	/**
-	 * 
-	 * @author excilys
-	 *
-	 */
 	public static class PwBuilder {
 		private String nameFilter;
 		private Integer pageNumber;
 		private String	fieldOrder;
 		private String order;
+		private String orderNumber;
 		private List<Computer> computerList;
 		private Long computerListSize;
 
@@ -57,6 +53,15 @@ public class PageWrapper{
 		 */
 		public PwBuilder order(String order) {
 			this.order = order;
+			return this;
+		}
+		/**
+		 * 
+		 * @param orderNumber
+		 * @return
+		 */
+		public PwBuilder orderNumber(String orderNumber) {
+			this.orderNumber = orderNumber;
 			return this;
 		}
 		/**
@@ -103,6 +108,7 @@ public class PageWrapper{
 		this.pageNumber = builder.pageNumber;
 		this.fieldOrder = builder.fieldOrder; 
 		this.order = builder.order;
+		this.orderNumber = builder.orderNumber;
 		this.computerList = builder.computerList;
 		this.computerListSize = builder.computerListSize;
 	}	
@@ -112,6 +118,7 @@ public class PageWrapper{
 	private Integer pageNumber;
 	private String	fieldOrder;
 	private String order;
+	private String orderNumber;
 	private List<Computer> computerList;
 	private Long computerListSize;
 	private final static int PAGE_INCREMENT[]={-10,-5,-4,-3,-2,-1,0,1,2,3,4,5,10};
@@ -147,6 +154,12 @@ public class PageWrapper{
 	}
 	public void setOrder(String order) {
 		this.order = order;
+	}
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 	public List<Computer> getComputerList() {
 		return computerList;

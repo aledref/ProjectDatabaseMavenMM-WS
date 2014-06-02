@@ -49,6 +49,7 @@
 	    		dateComparison: true
         	},
 	    	"company":{
+	    		required: true,
 	    		maxlength: 255
         	}
         	}
@@ -57,7 +58,7 @@
  
  </script>
 <!--              /JQuery               -->
-
+<br><br>
 <section id="main">
 
 	<h1><spring:message code="addComp"/></h1>

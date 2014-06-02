@@ -24,6 +24,14 @@
 			<a href="index.jsp"> <spring:message code="header.name"/> </a>
 		</h1>
 		
+		<div>
 		<a href="?lang=en${params}"> <spring:message code="en"/> </a>
 		<a href="?lang=fr${params}"> <spring:message code="fr"/> </a>
+		</div>
+		
+		<div>
+		<a href="spring_security_login${params}"> <spring:message code="login"/> </a>
+		<a href="j_spring_security_logout${params}"> <spring:message code="logout"/> </a>
+		</div>
+		
 	</header>

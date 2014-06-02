@@ -22,7 +22,7 @@ public class ComputerDTO {
 	 *
 	 */
 	public static class DTOBuilder {
-		private String	name;
+		private String name;
 		private String introduced;
 		private String discontinued;
 		private String company;

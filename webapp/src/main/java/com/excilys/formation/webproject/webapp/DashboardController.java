@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.formation.webproject.binding.Decoder;
 import com.excilys.formation.webproject.core.Computer;
 import com.excilys.formation.webproject.core.PageWrapper;
 import com.excilys.formation.webproject.service.MainService;
@@ -20,6 +21,9 @@ public class DashboardController {
 
 	@Autowired
 	private MainService mainService;
+	
+	@Autowired
+	private Decoder decoder;
 
 	/**
 	 * 
@@ -32,13 +36,12 @@ public class DashboardController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getDashboard(@RequestParam(value="nameFilter",defaultValue="") String nameFilter, 
-			@RequestParam(value="fieldOrder",defaultValue="cpu.id") String fieldOrder, 
-			@RequestParam(value="order",defaultValue="ASC") String order, 
+			@RequestParam(value="orderNumber",defaultValue="0") String orderNumber,
 			@RequestParam(value="pageNumber",defaultValue="1") String pageNumberS,
 			Model model) {		
-
+		
 		PageWrapper pageWrapper = null;
-
+		
 		//Search OFF
 		if ( (nameFilter.isEmpty()) || (nameFilter == null) ) {
 
@@ -58,7 +61,11 @@ public class DashboardController {
 			}else pageNumber = (int) Double.parseDouble(pageNumberS);					
 
 			//Build with all except computerList,namefilter
-			pageWrapper = PageWrapper.builder().pageNumber(pageNumber).fieldOrder(fieldOrder).order(order).computerListSize(computerListSize).build();
+			pageWrapper = PageWrapper.builder().pageNumber(pageNumber).computerListSize(computerListSize).build();
+			
+			//Resolve Order
+			pageWrapper.setOrderNumber(orderNumber);
+			decoder.fromCode(pageWrapper);
 
 			//5-Set the computerList
 			mainService.getListComputer(pageWrapper);
@@ -82,13 +89,17 @@ public class DashboardController {
 			}else pageNumber = (int) Double.parseDouble(pageNumberS);
 
 			//Build with 5-nameFilter, countains all except except computerList
-			pageWrapper = PageWrapper.builder().nameFilter(nameFilter).pageNumber(pageNumber).fieldOrder(fieldOrder).order(order).computerListSize(computerListSize).build();
-
+			pageWrapper = PageWrapper.builder().nameFilter(nameFilter).pageNumber(pageNumber).computerListSize(computerListSize).build();
+			
+			//Resolve Order
+			pageWrapper.setOrderNumber(orderNumber);
+			decoder.fromCode(pageWrapper);
+			
 			//5-Set the computerList			
 			List<Computer> computerList = mainService.getListComputerWithName(pageWrapper); 
 
 			//Build complete PageWrapper
-			pageWrapper = PageWrapper.builder().nameFilter(nameFilter).pageNumber(pageNumber).fieldOrder(fieldOrder).order(order).computerList(computerList).computerListSize(computerListSize).build();		
+			pageWrapper = PageWrapper.builder().nameFilter(nameFilter).pageNumber(pageNumber).computerList(computerList).computerListSize(computerListSize).build();		
 		}
 
 		//Set the PageWrapper
