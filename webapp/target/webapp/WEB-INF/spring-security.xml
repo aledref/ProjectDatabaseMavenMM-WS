@@ -10,7 +10,7 @@
 		<intercept-url pattern="/*addComputer" access="ROLE_ADMIN" />
 		<intercept-url pattern="/*editComputer" access="ROLE_ADMIN" />
 		<intercept-url pattern="/*removeComputer" access="ROLE_ADMIN" />
-		<!--   <intercept-url pattern="/**" access="ROLE_USER" /> -->
+		<!--  <intercept-url pattern="/**" access="ROLE_USER" /> -->
 	</http>
  
 	<authentication-manager>

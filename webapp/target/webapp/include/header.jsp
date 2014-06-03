@@ -30,8 +30,8 @@
 		</div>
 		
 		<div>
-		<a href="spring_security_login${params}"> <spring:message code="login"/> </a>
-		<a href="j_spring_security_logout${params}"> <spring:message code="logout"/> </a>
+		<a href="<c:url value="spring_security_login"/>"> <spring:message code="login"/> </a>
+		<a href="<c:url value="j_spring_security_logout"/>"> <spring:message code="logout"/> </a>
 		</div>
 		
 	</header>

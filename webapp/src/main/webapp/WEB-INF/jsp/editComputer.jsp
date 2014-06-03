@@ -7,8 +7,6 @@
 <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.validate.js"></script>
 
-<br>
-<br>
 <!--               JQuery               -->
 $(document).ready(function(){
 	 
@@ -58,7 +56,7 @@ $(document).ready(function(){
 	    });
  });
 <!--              /JQuery               -->
-
+<br><br>
 <section id="main">
 
 	<h1>

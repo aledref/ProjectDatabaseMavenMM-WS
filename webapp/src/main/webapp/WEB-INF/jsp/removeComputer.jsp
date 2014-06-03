@@ -7,7 +7,7 @@
 <section id="main">
 
 	<h1>
-		<spring:message code="name" />
+		<spring:message code="removeComp" />
 	</h1>
 
 	<form action="removeComputer" method="POST">
