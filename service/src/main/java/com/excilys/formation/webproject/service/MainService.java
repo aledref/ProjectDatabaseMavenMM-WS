@@ -2,6 +2,9 @@ package com.excilys.formation.webproject.service;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
 import com.excilys.formation.webproject.core.Company;
 import com.excilys.formation.webproject.core.Computer;
 import com.excilys.formation.webproject.core.PageWrapper;

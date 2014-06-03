@@ -3,6 +3,8 @@ package com.excilys.formation.webproject.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,6 @@ import com.excilys.formation.webproject.persistence.ComputerDAO;
  * @author excilys
  *
  */
-
 @Service
 @Transactional(readOnly=true)
 public class MainServiceImpl implements MainService{
@@ -71,6 +72,7 @@ public class MainServiceImpl implements MainService{
 	public void saveComputer(Computer comp, Long id){
 			cpuDAO.save(comp,id);
 	}
+	
 	@Transactional(readOnly=false)
 	@Override
 	public void deleteComputer(Long id) {
