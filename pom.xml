@@ -86,7 +86,7 @@
 		<module>service</module>
 		<module>binding</module>
 		<module>webapp</module>
-    <module>webservices</module>
+    	<module>webservices</module>
   </modules>
 
 	<repositories>
