@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -9,11 +8,6 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-	<context:annotation-config />
-	<context:component-scan base-package="com.excilys" />
-
-	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
@@ -24,7 +18,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		<property name="password" value="root" />
 		<property name="idleConnectionTestPeriodInMinutes" value="60" />
 		<property name="idleMaxAgeInMinutes" value="240" />
-		<property name="maxConnectionsPerPartition" value="2" />
+		<property name="maxConnectionsPerPartition" value="10" />
 		<property name="minConnectionsPerPartition" value="2" />
 		<property name="partitionCount" value="2" />
 		<property name="acquireIncrement" value="5" />
@@ -34,21 +28,34 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		<property name="ConnectionTimeoutInMs" value="500"></property>
 	</bean>
 
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    	<property name="persistenceUnitName" value="computer" />
-    	<property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence"></property>
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.excilys.formation.webproject.*" />
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
-            </bean>
-        </property>
-    </bean>  
+	<bean id="emf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="computer" />
+		<property name="persistenceProviderClass"
+			value="org.hibernate.jpa.HibernatePersistenceProvider"></property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.excilys.formation.webproject" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-    
+		<property name="entityManagerFactory" ref="emf" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<import resource="classpath:core-context.xml" />
+	<import resource="classpath:binding-context.xml" />
+	<import resource="classpath:service-context.xml" />
+
+	<context:component-scan base-package="com.excilys.formation.webproject.webapp" />
+
 </beans>

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.webproject.core.Company;
 import com.excilys.formation.webproject.core.Computer;
 import com.excilys.formation.webproject.core.PageWrapper;

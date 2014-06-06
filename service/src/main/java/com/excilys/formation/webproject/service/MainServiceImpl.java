@@ -3,8 +3,6 @@ package com.excilys.formation.webproject.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.WebService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +20,7 @@ import com.excilys.formation.webproject.persistence.ComputerDAO;
  *
  */
 @Service
-@Transactional(readOnly=true)
+@Transactional(readOnly=false)
 public class MainServiceImpl implements MainService{
 
 	@Autowired
@@ -61,19 +59,16 @@ public class MainServiceImpl implements MainService{
 		return cpuDAO.getListWithName(pageWrapper);
 	}
 	
-	@Transactional(readOnly=false)
 	@Override
 	public void createComputer(Computer comp) {
 			cpuDAO.create(comp);
 	}	
 	
-	@Transactional(readOnly=false)
 	@Override
 	public void saveComputer(Computer comp, Long id){
 			cpuDAO.save(comp,id);
 	}
 	
-	@Transactional(readOnly=false)
 	@Override
 	public void deleteComputer(Long id) {
 			cpuDAO.delete(id);

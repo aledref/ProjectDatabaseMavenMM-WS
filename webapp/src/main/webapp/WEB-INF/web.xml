@@ -11,7 +11,7 @@
 	<!-- Root Spring Container -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/SpringContext.xml,/WEB-INF/spring-security.xml</param-value>
+		<param-value>/WEB-INF/webapp-context.xml,/WEB-INF/spring-security.xml</param-value>
 	</context-param>
 
 	<!-- Webservice Listener -->

@@ -6,10 +6,10 @@
 	version="1.0">
 
 	<persistence-unit name="computer" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
 		<class>com.excilys.formation.webproject.core.Computer</class>
 		<class>com.excilys.formation.webproject.core.Company</class>
+		<class>com.excilys.formation.webproject.core.LogDAOom</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="" />

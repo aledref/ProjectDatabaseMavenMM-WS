@@ -23,13 +23,13 @@
 					else if ( ( month == 2 ) && (day == 29) && ( (year % 4) != 0) ) {valid = false;} 
 				} else {valid = false;}			
 				return ( this.optional(element) || valid);
-				},"Date Invalide"	        
+				},"<spring:message code="invalid_date"/>"        
 			);								
 			
 			jQuery.validator.addMethod("dateComparison", function (value,element) {
 				if ( ($.trim(value).length > 0) && ($.trim($('#introduced').val()).length > 0) ) { return Date.parse($('#introduced').val()) < Date.parse(value); }
 				else {return true;}
-				},"Dates Impossibles"
+				},"<spring:message code="impossible_date"/>"
 			);
 			
      // Initialisation du plugin
@@ -78,7 +78,7 @@
 			<div class="clearfix">
 				<label for="introduced"><spring:message code="introduced"/></label>
 				<div class="input">
-					<form:input id ="introduced" type="date" name="introduced" path="introduced" />
+					<form:input id ="introduced" type="text" name="introduced" path="introduced" />
 					<font color="red"> <form:errors path="introduced"></form:errors></font>
 					<span class="help-inline"><spring:message code="pattern"/></span>
 					<input size="${errorlist.get(1).length()}" readonly type="text" value="${ errorlist.get(1) }"/>				
@@ -87,7 +87,7 @@
 			<div class="clearfix">
 				<label for="discontinued"><spring:message code="discontinued"/></label>
 				<div class="input">
-					<form:input id ="discontinued" type="date" name="discontinued" path="discontinued"/>
+					<form:input id ="discontinued" type="text" name="discontinued" path="discontinued"/>
 					<font color="red"> <form:errors path="discontinued"></form:errors></font>
 					<span class="help-inline"><spring:message code="pattern"/></span>
 					<input size="${errorlist.get(2).length()}" readonly type="text" value="${ errorlist.get(2) }"/>			

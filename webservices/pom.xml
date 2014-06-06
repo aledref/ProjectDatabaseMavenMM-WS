@@ -38,16 +38,6 @@
 			<artifactId>jaxws-spring</artifactId>
 			<version>1.9</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.stream.buffer</groupId>
-			<artifactId>streambuffer</artifactId>
-			<version>1.5.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jvnet.staxex</groupId>
-			<artifactId>stax-ex</artifactId>
-			<version>1.7.6</version>
-		</dependency>
 
 	</dependencies>
 

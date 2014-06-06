@@ -8,6 +8,7 @@
 <script type="text/javascript" src="js/jquery.validate.js"></script>
 
 <!--               JQuery               -->
+ <script type="text/javascript">
 $(document).ready(function(){
 	 
 			jQuery.validator.addMethod("dateValid", function (value,element) { 
@@ -23,13 +24,13 @@ $(document).ready(function(){
 					else if ( ( month == 2 ) && (day == 29) && ( (year % 4) != 0) ) {valid = false;} 
 				} else {valid = false;}			
 				return ( this.optional(element) || valid);
-				},"Date Invalide"	        
+				},"<spring:message code="invalid_date"/>"           
 			);								
 			
 			jQuery.validator.addMethod("dateComparison", function (value,element) {
 				if ( ($.trim(value).length > 0) && ($.trim($('#introduced').val()).length > 0) ) { return Date.parse($('#introduced').val()) < Date.parse(value); }
 				else {return true;}
-				},"Dates Impossibles"
+				},"<spring:message code="impossible_date"/>"
 			);
 			
      // Initialisation du plugin
@@ -55,6 +56,7 @@ $(document).ready(function(){
         	}
 	    });
  });
+</script>
 <!--              /JQuery               -->
 <br><br>
 <section id="main">
